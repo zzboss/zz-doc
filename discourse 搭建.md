@@ -29,12 +29,12 @@
   - nginx 下配置需要将 ssl 相关配置和端口注释, 使用 socketed 配置
 
     ```yml
-      # expose
-      # - "80:80"   # http
-      # - "43:443"  # https
-      #  - "templates/web.ssl.template.yml"
-      #  - "templates/web.letsencrypt.ssl.template.yml"
-      - "templates/web.socketed.template.yml"`
+    # expose
+    # - "80:80"   # http
+    # - "43:443"  # https
+    #  - "templates/web.ssl.template.yml"
+    #  - "templates/web.letsencrypt.ssl.template.yml"
+    - "templates/web.socketed.template.yml"
     ```
 
   - 在 nginx 中的配置 https， http 的可以直接将 location 放入 80 端口的 server 配置下
@@ -67,6 +67,7 @@
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto https;
           proxy_set_header X-Real-IP $remote_addr;
+          add_header Content-Security-Policy "upgrade-insecure-requests"; # 将 discourse 的请求转为https
       }
     }
     ```
